@@ -4,6 +4,7 @@ import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
+  VideoCameraIcon,
 } from '@heroicons/react/24/outline';
 
 // 无感刷新部分页面
@@ -23,6 +24,7 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  { name: 'Movies', href: '/dashboard/movies', icon: VideoCameraIcon },
 ];
 
 export default function NavLinks() {
