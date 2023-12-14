@@ -5,6 +5,9 @@ import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+// 用户登录 身份验证
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 
 // 类型验证
 const FormSchema = z.object({
@@ -115,4 +118,24 @@ export async function deleteInvoice(id: string) {
   }
   revalidatePath('/dashboard/invoices');
   // 当前页面不需要跳转了
+}
+
+// 身份校验
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return '验证失败! Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
+  }
 }
